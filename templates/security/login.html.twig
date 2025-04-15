@@ -1,34 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Authentification Visuelle{% endblock %}
 
 {% block body %}
-<div class="container security-form mt-3" style="margin-top: 20px;">
-    <form method="post" action="{{ path('app_login') }}" class="login-form shadow-lg p-5"
-          style="border-radius: 10px; background-color: #f9f9f9; max-width: 600px; margin: auto; font-size: 18px;">
+<div class="container mt-5">
+    <form method="post" action="{{ path('app_login') }}" class="shadow-lg p-5" style="border-radius: 10px; background-color: #f3f6fa; max-width: 800px; margin: auto;">
         {% if error %}
-            <div class="alert alert-danger text-center" style="font-weight: bold; font-size: 20px;">
+            <div class="alert alert-danger text-center">
                 {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
         {% endif %}
 
-        <h1 class="h2 mb-4 text-center" style="color: #009B4D; font-weight: bold; font-size: 28px;">Login to Your Account</h1>
+        <h2 class="text-center text-success mb-4">Connexion avec vérification faciale</h2>
 
-        <label for="inputEmail" class="form-label">Email</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-               class="form-control mb-4 shadow-sm"
-               required autofocus placeholder="Enter your email">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" required autofocus>
 
-        <label for="inputPassword" class="form-label">Password</label>
-        <input type="password" name="password" id="inputPassword"
-               class="form-control mb-5 shadow-sm"
-               required placeholder="Enter your password">
+                <label for="inputPassword" class="form-label">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control mb-3" required>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </div>
 
-        <button class="btn btn-success btn-lg btn-block w-100" type="submit">
-            Sign in
-        </button>
+            <div class="col-md-6 text-center">
+                <video id="video" width="240" height="180" autoplay class="border rounded"></video>
+                <canvas id="canvas" width="240" height="180" style="display:none;"></canvas>
+                <input type="hidden" name="face_image" id="face_image">
+                <button type="button" id="capture" class="btn btn-outline-primary mt-2">Capturer le visage</button>
+            </div>
+        </div>
+
+        <button class="btn btn-success mt-4 w-100" type="submit">Se connecter</button>
     </form>
 </div>
+
+<script>
+navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+    document.getElementById('video').srcObject = stream;
+});
+
+document.getElementById('capture').onclick = function () {
+    const canvas = document.getElementById('canvas');
+    const video = document.getElementById('video');
+    canvas.getContext('2d').drawImage(video, 0, 0, 240, 180);
+    const imageData = canvas.toDataURL('image/png');
+    document.getElementById('face_image').value = imageData;
+};
+</script>
 {% endblock %}
