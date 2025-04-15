@@ -1,8 +1,90 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        h1 {
+            color: #007bff;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+            max-width: 600px;
+            margin: auto;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-container:hover {
+            box-shadow: 0 4px 30px rgba(0, 123, 255, 0.2);
+        }
+
+        input, select, textarea {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px #007bff66;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .alert {
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .btn-submit {
+                width: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container mt-5">
-        <h1 class="text-center">{{ title }}</h1>
+        <h1>{{ title }}</h1>
 
         {% for message in app.flashes('success') %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -13,15 +95,13 @@
             </div>
         {% endfor %}
 
-        <form method="post" class="mt-4 p-4 shadow-lg rounded bg-light">
-            {{ form_start(form, {'attr': {'class': 'form-group'}}) }}
+        <form method="post" class="form-container">
+            {{ form_start(form) }}
 
-            <div class="form-row">
-                {{ form_widget(form) }}
-            </div>
+            {{ form_widget(form) }}
 
-            <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary btn-lg mt-3 px-4 py-2 rounded-pill shadow-sm transition-all"> 
+            <div class="form-group text-center mt-4">
+                <button type="submit" class="btn-submit">
                     {{ title }}
                 </button>
             </div>

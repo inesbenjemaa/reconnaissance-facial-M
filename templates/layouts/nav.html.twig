@@ -1,73 +1,187 @@
-<nav class="navbar navbar-expand-lg" style="background-color:rgb(85, 165, 121); box-shadow: 0px 4px 6px rgba(193, 188, 188, 0.1);">
-  <div class="container">
-    <!-- Logo et titre de la marque -->
-    <a class="navbar-brand" style="font-weight: bold; font-size: 24px; color:rgb(46, 90, 42);">PlatForme</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <!-- Lien vers la page d'accueil -->
-        <li class="nav-item">
-          <a class="nav-link active font-weight-bold" aria-current="page" href="{{ path('app_home') }}" style="color: #FAF5E9;">Home</a>
-        </li>
-        
-        <!-- Menu des catégories -->
-        {% if categories is defined %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle font-weight-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #FAF5E9;">
-            Categories
-          </a>
-          <ul class="dropdown-menu" style="background-color: #FAF5E9;">
-            {% for category in categories %}
-              <li><a class="dropdown-item font-weight-bold" href="#" style="color:rgb(0, 0, 0);">{{ category.name }}</a></li>
-              {% for ssubCategories in category.ssubCategories %}
-                <li><a class="dropdown-item" href="{{ path('app_home_product_filter', {'id': ssubCategories.id }) }}" style="color: #009B4D;">{{ ssubCategories.name }}</a></li>
-              {% endfor %}
-              <li><hr class="dropdown-divider"></li>
-            {% endfor %}
-          </ul>
-        </li>
-        {% endif %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Modifiée</title>
+    <style>
+        /* Navbar et animation */
+        nav {
+            background-color: rgb(85, 165, 121);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-        <!-- Menu d'administration (visible seulement pour les admins) -->
-        {% if is_granted('ROLE_ADMIN') %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle font-weight-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #FAF5E9;">
-            Administration
-          </a>
-          <ul class="dropdown-menu" style="background-color: #FAF5E9;">
-            <li><hr class="dropdown-divider"></li> 
-            <li><a class="dropdown-item" href="{{ path('app_user') }}" style="color: #009B4D;">Users</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_authorization') }}" style="color: #009B4D;">Access</a></li>
-          </ul>
-        </li>
-        {% endif %}
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 28px;
+            color: rgb(46, 90, 42);
+            transition: color 0.3s ease-in-out;
+        }
 
-        <!-- Liens si utilisateur non connecté -->
-        {% if app.user == false %}
-        <li class="nav-item">
-          <a href="{{ path('app_register') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);">Register</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ path('app_login') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);">Connexion</a>
-        </li>
-        {% endif %}
-      </ul>
+        .navbar-brand:hover {
+            color: #3b7a56 !important;
+            transform: scale(1.05);
+            transition: color 0.3s ease-in-out, transform 0.3s ease;
+        }
 
-      <!-- Bouton Logout si utilisateur connecté -->
-      {% if app.user %}
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a href="{{ path('app_logout') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);"
-             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            Logout
-          </a>
-          <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;"></form>
-        </li>
-      </ul>
-      {% endif %}
-    </div>
-  </div>
-</nav>
+        .navbar-nav .nav-link {
+            font-weight: bold;
+            color: #FAF5E9;
+            margin-right: 1rem;
+            transition: color 0.3s ease-in-out, transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #009B4D;
+            transform: scale(1.1);
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-menu {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-nav-scroll {
+            padding-left: 0;
+        }
+
+        .nav-item {
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .navbar-toggler {
+            border-color: #FAF5E9;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #FAF5E9;
+        }
+
+        .navbar-nav .nav-item a {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-item a:hover {
+            background-color: #009B4D;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Styles spécifiques pour le menu Administration */
+        .admin-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-link i {
+            font-size: 1.2rem;
+            color: #009B4D;
+        }
+
+        .admin-link:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Ajout d'un effet hover pour les éléments du dropdown */
+        .dropdown-item:hover {
+            background-color: #e0f7e0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <!-- Logo et titre de la marque -->
+            <a class="navbar-brand" href="#">PlatForme</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <!-- Lien vers la page d'accueil -->
+                    <li class="nav-item">
+                        <a class="nav-link active font-weight-bold" aria-current="page" href="{{ path('app_home') }}" style="color: #FAF5E9;">Home</a>
+                    </li>
+                    
+                    <!-- Menu des catégories -->
+                    {% if categories is defined %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle font-weight-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #FAF5E9;">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #FAF5E9;">
+                            {% for category in categories %}
+                                <li><a class="dropdown-item font-weight-bold" href="#" style="color:rgb(0, 0, 0);">{{ category.name }}</a></li>
+                                {% for ssubCategories in category.ssubCategories %}
+                                    <li><a class="dropdown-item" href="{{ path('app_home_product_filter', {'id': ssubCategories.id }) }}" style="color: #009B4D;">{{ ssubCategories.name }}</a></li>
+                                {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <!-- Menu d'administration (visible seulement pour les admins) -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle font-weight-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #FAF5E9;">
+                            Administration
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #FAF5E9;">
+                            <li><hr class="dropdown-divider"></li> 
+                            <li>
+                                <a class="dropdown-item admin-link" href="{{ path('app_user') }}" style="color:rgb(76, 80, 78);">
+                                    <i class="bi bi-person"></i> Gestion des utilisateurs
+                                </a>
+                            </li> 
+                            <li>
+                                <a class="dropdown-item admin-link" href="{{ path('app_authorization') }}" style="color:rgb(94, 100, 97);">
+                                    <i class="bi bi-shield-lock"></i> Gestion des accès
+                                </a>
+                            </li> 
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <!-- Liens si utilisateur non connecté -->
+                    {% if app.user == false %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_register') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);">Connexion</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Bouton Logout si utilisateur connecté -->
+                {% if app.user %}
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="{{ path('app_logout') }}" class="nav-link font-weight-bold" style="color:rgb(255, 255, 255);"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;"></form>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</body>
+</html>
