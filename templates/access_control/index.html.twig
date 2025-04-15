@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gestion des autorisations</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <form method="post">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Statut</th>
+                    <th>État</th> <!-- Ajout d'une colonne pour l'état -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.firstName }} {{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <select name="access_status[{{ user.id }}]">
+                                <option value="authorized" {% if user.authorizationStatus == 'authorized' %}selected{% endif %}>Autorisé</option>
+                                <option value="unauthorized" {% if user.authorizationStatus == 'unauthorized' %}selected{% endif %}>Non autorisé</option>
+                                <option value="impostor" {% if user.authorizationStatus == 'impostor' %}selected{% endif %}>Imposteur</option>
+                            </select>
+                        </td>
+                        <td>
+                            {% if user.authorizationStatus == 'authorized' %}
+                                <span class="badge bg-success">Autorisé</span>
+                            {% elseif user.authorizationStatus == 'unauthorized' %}
+                                <span class="badge bg-warning text-dark">Non autorisé</span>
+                            {% elseif user.authorizationStatus == 'impostor' %}
+                                <span class="badge bg-danger">Imposteur</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inconnu</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+{% endblock %}

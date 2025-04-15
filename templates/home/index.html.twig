@@ -1,0 +1,303 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+  {% if is_granted('ROLE_ADMIN') %}
+    <div class="admin-section container">
+      <h1 class="dashboard-header">Admin Content Statistics Dashboard</h1>
+      <div class="row g-4 mb-4">
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">50,000</div><div class="stat-label">Visits</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">95 sec</div><div class="stat-label">Avg. Session</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">6</div><div class="stat-label">Pages/Visit</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">59%</div><div class="stat-label">Bounce Rate</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">200,000</div><div class="stat-label">Page Views</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">12%</div><div class="stat-label">Goal Conversion</div></div></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6"><div class="chart-card"><h6>Visits by Week</h6><canvas id="visitsChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Bounce Rate by Week</h6><canvas id="bounceChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Traffic Sources</h6><canvas id="trafficChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Visitors by User Type</h6><canvas id="userTypeChart"></canvas></div></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      new Chart(document.getElementById('visitsChart'), {
+        type: 'line',
+        data: {
+          labels: [...Array(48).keys()].map(i => i + 5),
+          datasets: [{
+            label: 'Visits',
+            data: [...Array(48)].map(() => Math.floor(Math.random() * 100000)),
+            borderColor: '#0d6efd',
+            backgroundColor: 'rgba(13,110,253,0.1)',
+            fill: true
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('bounceChart'), {
+        type: 'line',
+        data: {
+          labels: [...Array(48).keys()].map(i => i + 5),
+          datasets: [{
+            label: 'Bounce Rate %',
+            data: [...Array(48)].map(() => Math.floor(Math.random() * 50 + 40)),
+            borderColor: '#fd7e14',
+            backgroundColor: 'rgba(253,126,20,0.1)',
+            fill: true
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('trafficChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Organic', 'Direct', 'Referral', 'Social', 'Paid', 'Display'],
+          datasets: [{
+            data: [55, 24, 9, 4, 4, 4],
+            backgroundColor: ['#198754', '#0d6efd', '#6f42c1', '#dc3545', '#ffc107', '#20c997']
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('userTypeChart'), {
+        type: 'bar',
+        data: {
+          labels: ['New', 'Returning'],
+          datasets: [{
+            data: [68, 32],
+            backgroundColor: ['#fd7e14', '#20c997']
+          }]
+        }
+      });
+    </script>
+
+    <style>
+      .admin-section .dashboard-header {
+        text-align: center;
+        margin: 30px 0;
+      }
+      .admin-section .card-stat {
+        border: none;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      .admin-section .stat-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+      }
+      .admin-section .stat-label {
+        color: #6c757d;
+      }
+      .admin-section .chart-card {
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      }
+    </style>
+  {% endif %}
+
+
+
+
+
+
+
+
+  {% if is_granted('ROLE_USER' , 'ROLE_EDITOR') %}
+    <div class="container">
+      <h1 class="text-center my-4"></h1>
+      <div class="row text-center mb-4">
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">5</div><div class="stat-label">Salles assignées 🏫</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">12</div><div class="stat-label">Matières étudiées 📘</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">6</div><div class="stat-label">Enseignants 👨‍🏫</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">95%</div><div class="stat-label">Présence 📅</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">2</div><div class="stat-label">Emplois actuels 💼</div></div></div>
+        <div class="col-md-2 col-6"><div class="card-stat"><div class="stat-value">85%</div><div class="stat-label">Progression 🌟</div></div></div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6"><div class="chart-card"><h6>Présence par semaine</h6><canvas id="presenceChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Progression par matière</h6><canvas id="progressChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Temps par salle</h6><canvas id="salleChart"></canvas></div></div>
+        <div class="col-md-6"><div class="chart-card"><h6>Répartition des enseignants</h6><canvas id="profChart"></canvas></div></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      new Chart(document.getElementById('presenceChart'), {
+        type: 'line',
+        data: {
+          labels: ['S1','S2','S3','S4','S5','S6','S7','S8'],
+          datasets: [{
+            label: 'Taux de présence (%)',
+            data: [92, 88, 94, 96, 91, 97, 93, 95],
+            borderColor: '#0d6efd',
+            fill: true,
+            backgroundColor: 'rgba(13,110,253,0.1)'
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('progressChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Maths', 'Physique', 'Info', 'Anglais', 'Élec'],
+          datasets: [{
+            label: 'Progression',
+            data: [90, 75, 82, 88, 80],
+            backgroundColor: '#198754'
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('salleChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Salle A', 'Salle B', 'Salle C', 'Salle D'],
+          datasets: [{
+            data: [40, 25, 20, 15],
+            backgroundColor: ['#0d6efd', '#fd7e14', '#20c997', '#ffc107']
+          }]
+        }
+      });
+
+      new Chart(document.getElementById('profChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Prof A', 'Prof B', 'Prof C', 'Prof D'],
+          datasets: [{
+            data: [30, 25, 25, 20],
+            backgroundColor: ['#dc3545', '#6f42c1', '#0dcaf0', '#198754']
+          }]
+        }
+      });
+    </script>
+
+    <style>
+      .card-stat {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      .stat-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+      }
+      .stat-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      .chart-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.05);
+      }
+    </style>
+
+
+  {% endif %}
+{% if not is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
+  <div class="container my-5" style="background-color: #f8f9fa; padding: 50px; border-radius: 10px;">
+    <div class="row align-items-center">
+      <!-- Bloc texte + options -->
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h2 class="text-primary">Contactez-nous à propos de notre platforme</h2>
+        <p class="text-muted">
+          Nous serions ravis de vous montrer comment générer plus de trafic et de prospects,
+          augmenter votre productivité commerciale et offrir un meilleur service client.
+          Voici différentes façons de nous contacter :
+        </p>
+
+        <div class="row text-center">
+          <div class="col-md-12 mb-3">
+            <div class="p-4 border rounded shadow-sm" style="background-color: #ffffff; border-color: #e0e0e0;">
+              <i class="bi bi-telephone fs-2 text-success"></i>
+              <h5 class="mt-2 text-dark">Appelez-nous directement</h5>
+              <p class="mb-1 fw-bold">+33 1 23 45 67 89</p>
+              <a href="#" class="text-muted small">Voir plus de numéros locaux</a>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="p-4 border rounded shadow-sm h-100" style="background-color: #ffffff; border-color: #e0e0e0;">
+              <i class="bi bi-chat-dots fs-2 text-primary"></i>
+              <h6 class="mt-2 text-dark">Discuter avec notre équipe</h6>
+              <a href="#" class="text-primary">Chat Commercial</a>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="p-4 border rounded shadow-sm h-100" style="background-color: #ffffff; border-color: #e0e0e0;">
+              <i class="bi bi-calendar-check fs-2 text-warning"></i>
+              <h6 class="mt-2 text-dark">Demander une démo</h6>
+              <a href="#" class="text-warning">Voir une démo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloc image -->
+      <div class="col-lg-6 text-center">
+        <img src="{{ asset('/images/3.jpg') }}" alt="Contact illustration" class="img-fluid rounded shadow" style="max-height: 500px;">
+      </div>
+    </div>
+  </div>
+
+  <style>
+    h2 {
+      font-weight: 600;
+      color: #007bff; /* Couleur primaire */
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #6c757d; /* Texte gris clair */
+    }
+    .p-4 {
+      padding: 2rem;
+    }
+    .border {
+      border-width: 1px;
+    }
+    .bi {
+      color: #007bff;
+    }
+    .text-muted {
+      color: #6c757d;
+    }
+    .shadow-sm {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .text-primary {
+      color: #007bff;
+    }
+    .text-success {
+      color: #28a745;
+    }
+    .text-warning {
+      color: #ffc107;
+    }
+    .text-dark {
+      color: #343a40;
+    }
+  </style>
+  
+  <!-- Ajoute ça dans ton base.html.twig ou layout principal si ce n’est pas encore fait -->
+  {# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> #}
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="container security-form mt-3" style="margin-top: 20px;">
+    <form method="post" action="{{ path('app_login') }}" class="login-form shadow-lg p-5"
+          style="border-radius: 10px; background-color: #f9f9f9; max-width: 600px; margin: auto; font-size: 18px;">
+        {% if error %}
+            <div class="alert alert-danger text-center" style="font-weight: bold; font-size: 20px;">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <h1 class="h2 mb-4 text-center" style="color: #009B4D; font-weight: bold; font-size: 28px;">Login to Your Account</h1>
+
+        <label for="inputEmail" class="form-label">Email</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+               class="form-control mb-4 shadow-sm"
+               required autofocus placeholder="Enter your email">
+
+        <label for="inputPassword" class="form-label">Password</label>
+        <input type="password" name="password" id="inputPassword"
+               class="form-control mb-5 shadow-sm"
+               required placeholder="Enter your password">
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button class="btn btn-success btn-lg btn-block w-100" type="submit">
+            Sign in
+        </button>
+    </form>
+</div>
+{% endblock %}

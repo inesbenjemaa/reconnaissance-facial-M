@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="container security-form mt-3" style="margin-top: 20px;">
+    <form method="post" class="login-form shadow-lg p-5" 
+          style="border-radius: 10px; background-color: #f9f9f9; max-width: 600px; margin: auto; font-size: 18px;">
+        <h1 class="h2 mb-4 text-center" style="color: #009B4D; font-weight: bold; font-size: 28px;">Create Your Account</h1>
+
+        {% if form_errors(registrationForm) %}
+            <div class="alert alert-danger text-center" style="font-weight: bold; font-size: 20px;">
+                {{ form_errors(registrationForm) }}
+            </div>
+        {% endif %}
+
+        <label for="inputEmail" class="form-label" style="font-weight: bold; color: #333; font-size: 20px;">Email</label>
+        {{ form_widget(registrationForm.email, {'attr': {
+            'class': 'form-control mb-4 shadow-sm',
+            'style': 'border: 1px solid #ccc; border-radius: 8px; padding: 12px; font-size: 18px;',
+            'placeholder': 'Enter your email'
+        }}) }}
+
+        <label for="inputFirstName" class="form-label" style="font-weight: bold; color: #333; font-size: 20px;">First Name</label>
+        {{ form_widget(registrationForm.firstName, {'attr': {
+            'class': 'form-control mb-4 shadow-sm',
+            'style': 'border: 1px solid #ccc; border-radius: 8px; padding: 12px; font-size: 18px;',
+            'placeholder': 'Enter your first name'
+        }}) }}
+
+        <label for="inputLastName" class="form-label" style="font-weight: bold; color: #333; font-size: 20px;">Last Name</label>
+        {{ form_widget(registrationForm.lastName, {'attr': {
+            'class': 'form-control mb-4 shadow-sm',
+            'style': 'border: 1px solid #ccc; border-radius: 8px; padding: 12px; font-size: 18px;',
+            'placeholder': 'Enter your last name'
+        }}) }}
+
+        <label for="inputPassword" class="form-label" style="font-weight: bold; color: #333; font-size: 20px;">Password</label>
+        {{ form_widget(registrationForm.plainPassword, {'attr': {
+            'class': 'form-control mb-5 shadow-sm',
+            'style': 'border: 1px solid #ccc; border-radius: 8px; padding: 12px; font-size: 18px;',
+            'placeholder': 'Enter your password'
+        }}) }}
+
+        <div class="form-check mb-4">
+            {{ form_widget(registrationForm.agreeTerms, {'attr': {
+                'class': 'form-check-input'
+            }}) }}
+            <label class="form-check-label" style="font-weight: bold; font-size: 18px;">I agree to the terms and conditions</label>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-lg btn-block w-100" 
+                style="background-color: #009B4D; border: none; border-radius: 8px; font-weight: bold; color: white; font-size: 20px; padding: 15px;">
+            Register
+        </button>
+
+        {{ form_end(registrationForm) }}
+    </form>
+</div>
+{% endblock %}
