@@ -1,56 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}Gestion des utilisateurs{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4" style="font-weight: bold; color: rgb(66, 100, 52);">Manage Users</h1>
+    <h1 class="text-center mb-4 text-success fw-bold">Gestion des utilisateurs</h1>
 
     {% include 'layouts/_flash_message.html.twig' %}
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
+    <div class="table-responsive shadow-sm rounded bg-white p-3">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-success text-center">
                 <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Rôle</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in users %}
                     <tr>
-                        <td>{{ user.id }}</td>
+                        <td class="text-center">{{ user.id }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
-                        <td>
+                        <td class="text-center">
                             {% if 'ROLE_ADMIN' in user.roles %}
-                                <span class="badge bg-primary">Administrator</span>
+                                <span class="badge bg-primary">Administrateur</span>
                             {% elseif 'ROLE_EDITOR' in user.roles %}
-                                <span class="badge bg-success">Editor</span>
+                                <span class="badge bg-info text-dark">Éditeur</span>
                             {% else %}
                                 <span class="badge bg-secondary">Client</span>
                             {% endif %}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {% if 'ROLE_ADMIN' not in user.roles %}
                                 {% if 'ROLE_EDITOR' not in user.roles %}
                                     <a 
                                         class="btn btn-outline-success btn-sm mb-1" 
                                         href="{{ path('app_user_to_editor', {'id': user.id}) }}" 
-                                        onclick="return confirm('Do you really want to make this user an editor?')">
-                                        <i class="bi bi-person-check-fill"></i> Add as Editor
+                                        onclick="return confirm('Confirmez-vous l\'attribution du rôle éditeur à cet utilisateur ?')">
+                                        <i class="bi bi-person-check-fill"></i> Éditeur
                                     </a>
                                 {% else %}
                                     <a 
                                         class="btn btn-outline-warning btn-sm mb-1" 
                                         href="{{ path('app_user_remove_editor_role', {'id': user.id}) }}" 
-                                        onclick="return confirm('Do you really want to remove the editor role from this user?')">
-                                        <i class="bi bi-person-dash-fill"></i> Remove Editor Role
+                                        onclick="return confirm('Confirmez-vous la suppression du rôle éditeur ?')">
+                                        <i class="bi bi-person-dash-fill"></i> Supprimer rôle
                                     </a>
                                 {% endif %}
                             {% endif %}
@@ -58,20 +58,20 @@
                             <a 
                                 class="btn btn-outline-primary btn-sm mb-1" 
                                 href="{{ path('app_user_edit', {'id': user.id}) }}">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-pencil-square"></i> Modifier
                             </a>
 
                             <a 
                                 class="btn btn-outline-danger btn-sm mb-1" 
                                 href="{{ path('app_user_remove', {'id': user.id}) }}" 
-                                onclick="return confirm('Do you really want to delete this user?')">
-                                <i class="bi bi-trash-fill"></i> Delete
+                                onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')">
+                                <i class="bi bi-trash-fill"></i> Supprimer
                             </a>
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6" class="text-center">No users found</td>
+                        <td colspan="6" class="text-center text-muted">Aucun utilisateur trouvé.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -79,8 +79,8 @@
     </div>
 
     <div class="text-end mt-4">
-        <a href="{{ path('app_user_add') }}" class="btn btn-primary">
-            <i class="bi bi-person-plus-fill"></i> Add User
+        <a href="{{ path('app_user_add') }}" class="btn btn-success shadow-sm">
+            <i class="bi bi-person-plus-fill"></i> Ajouter un utilisateur
         </a>
     </div>
 </div>
